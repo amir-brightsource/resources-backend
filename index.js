@@ -1,13 +1,21 @@
-const cool = require('cool-ascii-faces');
-const express = require('express')
-const path = require('path')
-const PORT = process.env.PORT || 5000
+const Koa = require("koa");
+const Router = require("koa-router");
+const _mainController = require('./controller/mainController');
 
-express()
-  .use(express.static(path.join(__dirname, 'public')))
-  .set('views', path.join(__dirname, 'views'))
-  .set('view engine', 'ejs')
-  .get('/', (req, res) => res.render('pages/index'))
-  .get('/cool', (req, res) => res.send(cool()))
-  .get('/cool2', (req, res) => res.send(cool()))
-  .listen(PORT, () => console.log(`Listening on ${ PORT }`))
+
+const PORT = process.env.PORT || 3002
+const app = new Koa();
+const router = new Router();
+
+router.get('/resources', _mainController.getResources);
+router.get('/actions', _mainController.getActions);
+
+app.use(router.routes());
+
+app.listen(PORT, function () {
+  console.log("==> 🌎  Listening on port %s. Visit http://localhost:%s/", PORT, PORT);
+});
+
+
+
+
