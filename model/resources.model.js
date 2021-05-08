@@ -13,9 +13,16 @@ const ResourcesModel = new Schema({
 })
 
 
+ResourcesModel.statics.getResources = async function() {
+    return this.find().catch(e => {
+        errorReport(e);
+        console.error('getResources err', e);
+    });
+};
+
 ResourcesModel.statics.createResource = async function(body) {
 
-    return new this(body).save().lean().catch(e => {
+    return new this(body).save().catch(e => {
         console.error('createResource err', e);
     });
 
